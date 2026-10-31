@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AURA Craft — Vanilla JS Client</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Top Navigation Bar -->
+  <header class="top-nav">
+    <div class="nav-container">
+      <div class="brand">
+        <a href="#home">AURA CRAFT</a>
+      </div>
+      <nav class="nav-links">
+        <a href="#catalog" class="nav-link">Catalog</a>
+        <a href="#about" class="nav-link">Craftsmanship</a>
+        <a href="#orders" class="nav-link" id="nav-orders-btn">My Orders</a>
+      </nav>
+      <div class="nav-actions">
+        <button id="auth-btn" class="btn btn-outline">Sign In</button>
+        <button id="cart-btn" class="btn btn-primary">
+          <span>Bag</span>
+          <span id="cart-badge" class="badge">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="home" class="hero-section">
+    <div class="hero-content">
+      <span class="hero-kicker">Architectural Objects & Fine Essentials</span>
+      <h1 class="hero-title">Timeless craftsmanship engineered for modern living.</h1>
+      <p class="hero-description">Discover our limited collection of European oak furniture, acoustic engineering, and horological precision.</p>
+      <div class="hero-cta-group">
+        <a href="#catalog" class="btn btn-primary">Explore Collection</a>
+        <span class="shipping-notice">Complimentary shipping on orders over $500</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Catalog Section -->
+  <section id="catalog" class="catalog-section">
+    <div class="section-header">
+      <h2 class="section-title">Curated Collection</h2>
+      <div class="controls-bar">
+        <div class="category-tabs" id="category-tabs">
+          <button class="tab active" data-category="all">All Objects</button>
+          <button class="tab" data-category="Furniture">Furniture</button>
+          <button class="tab" data-category="Lighting">Lighting</button>
+          <button class="tab" data-category="Audio">Audio</button>
+          <button class="tab" data-category="Watches">Watches</button>
+        </div>
+        <div class="filter-controls">
+          <input type="text" id="search-input" placeholder="Search catalog..." class="input-search">
+          <select id="sort-select" class="select-sort">
+            <option value="newest">Featured & New</option>
+            <option value="price_asc">Price: Low to High</option>
+            <option value="price_desc">Price: High to Low</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product Grid -->
+    <div id="product-grid" class="product-grid">
+      <div class="loading-state">Loading curated collection...</div>
+    </div>
+  </section>
+
+  <!-- Shopping Cart Drawer -->
+  <div id="cart-drawer" class="drawer-overlay hidden">
+    <div class="drawer-content">
+      <div class="drawer-header">
+        <h3>Your Shopping Bag</h3>
+        <button id="close-cart-btn" class="close-btn">&times;</button>
+      </div>
+      <div id="cart-items" class="drawer-body">
+        <!-- Rendered via JS -->
+      </div>
+      <div class="drawer-footer">
+        <div class="summary-row">
+          <span>Subtotal</span>
+          <span id="cart-subtotal" class="tabular">$0.00</span>
+        </div>
+        <button id="checkout-trigger-btn" class="btn btn-primary btn-block">Proceed to Checkout</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Checkout Modal -->
+  <div id="checkout-modal" class="modal-overlay hidden">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Complete Delivery Details</h3>
+        <button id="close-checkout-btn" class="close-btn">&times;</button>
+      </div>
+      <form id="checkout-form" class="modal-body">
+        <div class="form-group">
+          <label for="checkout-name">Full Recipient Name</label>
+          <input type="text" id="checkout-name" required placeholder="e.g. Jane Sterling">
+        </div>
+        <div class="form-group">
+          <label for="checkout-phone">Phone Number (for courier delivery)</label>
+          <input type="tel" id="checkout-phone" required placeholder="+1 (555) 000-0000">
+        </div>
+        <div class="form-group">
+          <label for="checkout-street">Street Address</label>
+          <input type="text" id="checkout-street" required placeholder="72 Nordic Way, Suite 4B">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="checkout-city">City</label>
+            <input type="text" id="checkout-city" required placeholder="Seattle">
+          </div>
+          <div class="form-group">
+            <label for="checkout-postal">Postal Code</label>
+            <input type="text" id="checkout-postal" required placeholder="98101">
+          </div>
+        </div>
+        <div class="payment-method-box">
+          <label>Payment Method</label>
+          <div class="radio-option">
+            <input type="radio" id="pay-cod" name="paymentMethod" value="Cash on Delivery" checked>
+            <label for="pay-cod">Cash on Delivery (Pay upon arrival)</label>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Confirm Order</button>
+      </form>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="footer-container">
+      <p>&copy; 2026 AURA Craft & Design Inc. All rights reserved.</p>
+      <p class="subtext">Vanilla JavaScript & REST API Integration Client</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

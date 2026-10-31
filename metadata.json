@@ -1,0 +1,6 @@
+{
+  "name": "AURA Craft & Design — Full-Stack E-Commerce Store",
+  "description": "Production-grade full-stack e-commerce web application featuring REST API, Mongoose/MongoDB Atlas architecture, JWT auth, inventory control, cart, and admin dashboard.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
