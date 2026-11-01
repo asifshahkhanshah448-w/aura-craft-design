@@ -7,7 +7,16 @@ const protect = async (req, res, next) => {
   if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
     try {
       token = req.headers.authorization.split(' ')[1];
-      const decoded = jwt.verify(token, process.env.JWT_SECRET || 'aura_super_secure_jwt_secret_internship_key_2026');
+      const secret = process.env.JWT_SECRET;
+      if (!secret || secret.trim() === '') {
+        console.error('[Auth Error] JWT_SECRET environment variable is missing.');
+        return res.status(500).json({
+          success: false,
+          message: 'Server configuration error: JWT_SECRET environment variable is missing.',
+        });
+      }
+
+      const decoded = jwt.verify(token, secret);
       req.user = await User.findById(decoded.id).select('-password');
       if (!req.user) {
         return res.status(401).json({ success: false, message: 'User not found' });

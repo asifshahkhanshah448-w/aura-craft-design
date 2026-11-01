@@ -74,7 +74,7 @@
         return `
         <article class="product-card" data-id="${product._id}">
           <div class="product-image-wrap">
-            <img src="${product.imageUrl}" alt="${product.name}" loading="lazy">
+            <img src="${product.imageUrl || '/images/fallback_product.svg'}" alt="${product.name}" loading="lazy" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/images/fallback_product.svg';">
           </div>
           <div class="product-card-body">
             <div class="product-category-row">

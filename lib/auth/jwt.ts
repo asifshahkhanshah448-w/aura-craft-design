@@ -3,7 +3,14 @@ import bcrypt from 'bcryptjs';
 import { NextRequest } from 'next/server';
 import { IUser } from '../types';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'aura_super_secure_jwt_secret_internship_key_2026';
+function getJwtSecret(): string {
+  const secret = process.env.JWT_SECRET;
+  if (!secret || secret.trim() === '') {
+    throw new Error('Server configuration error: JWT_SECRET environment variable is missing.');
+  }
+  return secret;
+}
+
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '7d';
 
 export interface TokenPayload {
@@ -14,6 +21,7 @@ export interface TokenPayload {
 }
 
 export function generateToken(user: { _id: string; email: string; role: 'customer' | 'admin'; name: string }): string {
+  const secret = getJwtSecret();
   return jwt.sign(
     {
       id: user._id,
@@ -21,15 +29,19 @@ export function generateToken(user: { _id: string; email: string; role: 'custome
       role: user.role,
       name: user.name,
     },
-    JWT_SECRET,
+    secret,
     { expiresIn: JWT_EXPIRES_IN as jwt.SignOptions['expiresIn'] }
   );
 }
 
 export function verifyToken(token: string): TokenPayload | null {
   try {
-    return jwt.verify(token, JWT_SECRET) as TokenPayload;
-  } catch {
+    const secret = getJwtSecret();
+    return jwt.verify(token, secret) as TokenPayload;
+  } catch (error) {
+    if (error instanceof Error && error.message.includes('JWT_SECRET')) {
+      console.error('[JWT Configuration Error]', error.message);
+    }
     return null;
   }
 }

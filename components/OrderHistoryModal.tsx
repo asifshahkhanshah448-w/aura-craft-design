@@ -4,12 +4,32 @@ import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { X, Package, Clock, Truck, CheckCircle2, XCircle, AlertCircle, RefreshCw } from 'lucide-react';
 import { IOrder, OrderStatus } from '@/lib/types';
+import { getValidImageUrl, FALLBACK_PRODUCT_IMAGE } from '@/lib/imageFallback';
 
 interface OrderHistoryModalProps {
   isOpen: boolean;
   onClose: () => void;
   authToken: string | null;
   onRequireAuth: () => void;
+}
+
+function OrderItemThumbnail({ src, alt }: { src: string; alt: string }) {
+  const [currentSrc, setCurrentSrc] = useState(() => getValidImageUrl(src));
+  return (
+    <Image
+      src={currentSrc}
+      alt={alt}
+      fill
+      referrerPolicy="no-referrer"
+      className="object-cover"
+      sizes="40px"
+      onError={() => {
+        if (currentSrc !== FALLBACK_PRODUCT_IMAGE) {
+          setCurrentSrc(FALLBACK_PRODUCT_IMAGE);
+        }
+      }}
+    />
+  );
 }
 
 export default function OrderHistoryModal({
@@ -189,12 +209,9 @@ export default function OrderHistoryModal({
                     {order.items.map((item, idx) => (
                       <div key={idx} className="flex items-center gap-3">
                         <div className="relative w-10 h-10 bg-stone-200 rounded overflow-hidden shrink-0">
-                          <Image
+                          <OrderItemThumbnail
                             src={item.imageUrl}
                             alt={item.name}
-                            fill
-                            className="object-cover"
-                            sizes="40px"
                           />
                         </div>
                         <div className="flex-grow text-xs">

@@ -1,9 +1,10 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import { X, Plus, Minus, Trash2, ArrowRight, ShoppingBag } from 'lucide-react';
 import { ICartItem } from '@/lib/types';
+import { getValidImageUrl, FALLBACK_PRODUCT_IMAGE } from '@/lib/imageFallback';
 
 interface CartDrawerProps {
   isOpen: boolean;
@@ -12,6 +13,25 @@ interface CartDrawerProps {
   onUpdateQuantity: (productId: string, delta: number) => void;
   onRemoveItem: (productId: string) => void;
   onProceedToCheckout: () => void;
+}
+
+function CartItemThumbnail({ src, alt }: { src: string; alt: string }) {
+  const [currentSrc, setCurrentSrc] = useState(() => getValidImageUrl(src));
+  return (
+    <Image
+      src={currentSrc}
+      alt={alt}
+      fill
+      referrerPolicy="no-referrer"
+      className="object-cover"
+      sizes="72px"
+      onError={() => {
+        if (currentSrc !== FALLBACK_PRODUCT_IMAGE) {
+          setCurrentSrc(FALLBACK_PRODUCT_IMAGE);
+        }
+      }}
+    />
+  );
 }
 
 export default function CartDrawer({
@@ -69,12 +89,9 @@ export default function CartDrawer({
                 <div key={item.product._id} className="py-4 flex gap-4">
                   {/* Thumbnail */}
                   <div className="relative w-18 h-18 bg-stone-100 rounded border border-stone-200 overflow-hidden shrink-0">
-                    <Image
+                    <CartItemThumbnail
                       src={item.product.imageUrl}
                       alt={item.product.name}
-                      fill
-                      className="object-cover"
-                      sizes="72px"
                     />
                   </div>
 

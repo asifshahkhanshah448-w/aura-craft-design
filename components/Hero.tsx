@@ -83,6 +83,7 @@ export default function Hero({ onExplore, onOpenApiDocs, dbMode }: HeroProps) {
               alt="AURA Craft Design Studio and Showroom"
               fill
               priority
+              referrerPolicy="no-referrer"
               className="object-cover"
               sizes="(max-width: 1024px) 100vw, 50vw"
             />

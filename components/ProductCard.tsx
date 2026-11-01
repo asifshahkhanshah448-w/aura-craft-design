@@ -1,9 +1,10 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import { Plus } from 'lucide-react';
 import { IProduct } from '@/lib/types';
+import { getValidImageUrl, FALLBACK_PRODUCT_IMAGE } from '@/lib/imageFallback';
 
 interface ProductCardProps {
   product: IProduct;
@@ -14,6 +15,12 @@ interface ProductCardProps {
 export default function ProductCard({ product, onAddToCart, onSelect }: ProductCardProps) {
   const isOutOfStock = product.stock <= 0;
   const isLowStock = product.stock > 0 && product.stock <= 5;
+  const [failedUrl, setFailedUrl] = useState<string | null>(null);
+
+  const displaySrc =
+    failedUrl === product.imageUrl
+      ? FALLBACK_PRODUCT_IMAGE
+      : getValidImageUrl(product.imageUrl);
 
   return (
     <article className="group bg-white rounded-lg border border-stone-200/90 overflow-hidden flex flex-col transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:border-stone-300">
@@ -23,11 +30,13 @@ export default function ProductCard({ product, onAddToCart, onSelect }: ProductC
         className="relative aspect-[4/3] w-full bg-stone-100 overflow-hidden cursor-pointer"
       >
         <Image
-          src={product.imageUrl}
+          src={displaySrc}
           alt={product.name}
           fill
+          referrerPolicy="no-referrer"
           className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          onError={() => setFailedUrl(product.imageUrl)}
         />
 
         {/* Subtle single status indicator if low stock or out of stock */}

@@ -16,12 +16,32 @@ import {
   Server,
 } from 'lucide-react';
 import { IProduct, IOrder, OrderStatus } from '@/lib/types';
+import { getValidImageUrl, FALLBACK_PRODUCT_IMAGE } from '@/lib/imageFallback';
 
 interface AdminDashboardModalProps {
   isOpen: boolean;
   onClose: () => void;
   authToken: string | null;
   onRefreshProducts: () => void;
+}
+
+function AdminProductThumbnail({ src, alt }: { src: string; alt: string }) {
+  const [currentSrc, setCurrentSrc] = useState(() => getValidImageUrl(src));
+  return (
+    <Image
+      src={currentSrc}
+      alt={alt}
+      fill
+      referrerPolicy="no-referrer"
+      className="object-cover"
+      sizes="32px"
+      onError={() => {
+        if (currentSrc !== FALLBACK_PRODUCT_IMAGE) {
+          setCurrentSrc(FALLBACK_PRODUCT_IMAGE);
+        }
+      }}
+    />
+  );
 }
 
 export default function AdminDashboardModal({
@@ -489,12 +509,9 @@ export default function AdminDashboardModal({
                           <td className="py-2.5 px-3">
                             <div className="flex items-center gap-2.5">
                               <div className="relative w-8 h-8 rounded bg-stone-100 overflow-hidden shrink-0 border border-stone-200">
-                                <Image
+                                <AdminProductThumbnail
                                   src={p.imageUrl}
                                   alt={p.name}
-                                  fill
-                                  className="object-cover"
-                                  sizes="32px"
                                 />
                               </div>
                               <span className="font-semibold text-stone-900 line-clamp-1">

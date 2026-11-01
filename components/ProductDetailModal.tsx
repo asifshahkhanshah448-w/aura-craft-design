@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import { X, Plus, Minus, Check, Star, ShieldCheck, Truck } from 'lucide-react';
 import { IProduct } from '@/lib/types';
+import { getValidImageUrl, FALLBACK_PRODUCT_IMAGE } from '@/lib/imageFallback';
 
 interface ProductDetailModalProps {
   product: IProduct | null;
@@ -18,8 +19,14 @@ export default function ProductDetailModal({
 }: ProductDetailModalProps) {
   const [qty, setQty] = useState(1);
   const [addedNotice, setAddedNotice] = useState(false);
+  const [failedUrl, setFailedUrl] = useState<string | null>(null);
 
   if (!product) return null;
+
+  const displaySrc =
+    failedUrl === product.imageUrl
+      ? FALLBACK_PRODUCT_IMAGE
+      : getValidImageUrl(product.imageUrl);
 
   const isOutOfStock = product.stock <= 0;
   const maxAvailable = product.stock;
@@ -48,11 +55,13 @@ export default function ProductDetailModal({
           {/* Product Image */}
           <div className="relative aspect-square md:aspect-auto w-full bg-stone-100">
             <Image
-              src={product.imageUrl}
+              src={displaySrc}
               alt={product.name}
               fill
+              referrerPolicy="no-referrer"
               className="object-cover"
               sizes="(max-width: 768px) 100vw, 50vw"
+              onError={() => setFailedUrl(product.imageUrl)}
             />
           </div>
 

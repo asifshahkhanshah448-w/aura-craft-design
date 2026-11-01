@@ -1,10 +1,19 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
+const getJwtSecret = () => {
+  const secret = process.env.JWT_SECRET;
+  if (!secret || secret.trim() === '') {
+    throw new Error('Server configuration error: JWT_SECRET environment variable is missing.');
+  }
+  return secret;
+};
+
 const generateToken = (id, role, email, name) => {
+  const secret = getJwtSecret();
   return jwt.sign(
     { id, role, email, name },
-    process.env.JWT_SECRET || 'aura_super_secure_jwt_secret_internship_key_2026',
+    secret,
     { expiresIn: process.env.JWT_EXPIRES_IN || '7d' }
   );
 };
