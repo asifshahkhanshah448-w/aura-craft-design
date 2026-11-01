@@ -184,17 +184,6 @@ A production-grade, full-stack e-commerce web application engineered for an inte
 
 ---
 
-## 6. Pre-Configured Test Accounts
-
-| Role | Email | Password | Permissions |
-|---|---|---|---|
-| **Administrator** | `admin@auracraft.com` | `admin123456` | Full catalog CRUD & order management |
-| **Customer** | `jane@example.com` | `customer123` | Browsing, ordering, personal order history |
-
-*Note: The UI also provides one-click "Demo Admin" and "Demo Customer" fast-fill buttons in the Sign In modal for instant testing.*
-
----
-
 ## 7. How to Run the Project
 
 ### Option A: Running the Integrated Full-Stack Application
