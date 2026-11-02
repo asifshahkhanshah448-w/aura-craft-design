@@ -28,24 +28,25 @@ export default function ApiDocDrawer({ isOpen, onClose }: ApiDocDrawerProps) {
 
   return (
     <div className="fixed inset-0 z-50 overflow-hidden bg-stone-900/40 backdrop-blur-sm">
-      <div className="absolute inset-y-0 right-0 max-w-full flex pl-10">
-        <div className="w-screen max-w-lg bg-white shadow-2xl flex flex-col border-l border-stone-200">
-          <div className="p-5 border-b border-stone-200 flex items-center justify-between bg-stone-50">
+      <div className="absolute inset-y-0 right-0 max-w-full flex pl-0 sm:pl-10">
+        <div className="w-screen max-w-full sm:max-w-lg bg-white shadow-2xl flex flex-col border-l border-stone-200">
+          <div className="p-4 sm:p-5 border-b border-stone-200 flex items-center justify-between bg-stone-50 shrink-0">
             <div className="flex items-center gap-2">
               <Server className="w-4 h-4 text-stone-800" />
-              <h2 className="text-sm font-semibold uppercase tracking-wider text-stone-900">
+              <h2 className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-stone-900">
                 System & REST API Health
               </h2>
             </div>
             <button
               onClick={onClose}
-              className="p-1 text-stone-400 hover:text-stone-900 transition-colors"
+              aria-label="Close diagnostics"
+              className="p-1.5 text-stone-400 hover:text-stone-900 transition-colors cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
           </div>
 
-          <div className="flex-grow overflow-y-auto p-6 space-y-6 text-xs text-stone-700">
+          <div className="flex-grow overflow-y-auto p-4 sm:p-6 space-y-5 sm:space-y-6 text-xs text-stone-700">
             {/* Real Connection Status */}
             <div className="border border-stone-200 rounded-lg p-4 bg-stone-50">
               <div className="flex items-center gap-2 font-semibold text-stone-900 mb-2">

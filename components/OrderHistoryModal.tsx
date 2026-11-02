@@ -46,25 +46,23 @@ export default function OrderHistoryModal({
     let cancelled = false;
     if (isOpen && authToken) {
       const load = async () => {
+        setIsLoading(true);
+        setErrorMessage('');
         try {
-          const res = await fetch('/api/orders/my-orders', {
-            headers: {
-              Authorization: `Bearer ${authToken}`,
-            },
+          const res = await fetch('/api/orders/user', {
+            headers: { Authorization: `Bearer ${authToken}` },
           });
-
           const data = await res.json();
           if (!cancelled) {
-            if (!res.ok || !data.success) {
-              setErrorMessage(data.message || 'Failed to retrieve order history.');
-            } else {
+            if (res.ok && data.success) {
               setOrders(data.orders || []);
+            } else {
+              setErrorMessage(data.message || 'Failed to load order history.');
             }
           }
-        } catch (err: unknown) {
+        } catch {
           if (!cancelled) {
-            const msg = err instanceof Error ? err.message : 'Error fetching orders.';
-            setErrorMessage(msg);
+            setErrorMessage('Network error loading orders.');
           }
         } finally {
           if (!cancelled) {
@@ -122,28 +120,29 @@ export default function OrderHistoryModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-stone-900/60 backdrop-blur-sm flex items-center justify-center p-4">
-      <div className="relative bg-white rounded-lg shadow-2xl max-w-2xl w-full border border-stone-200 overflow-hidden my-8 max-h-[85vh] flex flex-col">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-stone-900/60 backdrop-blur-sm flex items-center justify-center p-2.5 sm:p-4">
+      <div className="relative bg-white rounded-lg shadow-2xl max-w-2xl w-full border border-stone-200 overflow-hidden my-3 sm:my-6 max-h-[92vh] sm:max-h-[85vh] flex flex-col">
         {/* Header */}
-        <div className="px-6 py-4 border-b border-stone-200 flex items-center justify-between bg-stone-50/60">
+        <div className="px-4 sm:px-6 py-3.5 sm:py-4 border-b border-stone-200 flex items-center justify-between bg-stone-50/60 shrink-0">
           <div className="flex items-center gap-2">
             <Package className="w-4 h-4 text-stone-700" />
-            <h2 className="text-sm font-semibold uppercase tracking-wider text-stone-900">
+            <h2 className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-stone-900">
               Your Order History
             </h2>
           </div>
           <button
             onClick={onClose}
-            className="p-1 text-stone-400 hover:text-stone-900 rounded-md transition-colors"
+            aria-label="Close order history"
+            className="p-1.5 text-stone-400 hover:text-stone-900 rounded-md transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Content */}
-        <div className="p-6 overflow-y-auto flex-grow">
+        <div className="p-4 sm:p-6 overflow-y-auto flex-grow">
           {!authToken ? (
-            <div className="text-center py-12">
+            <div className="text-center py-10 sm:py-12">
               <Package className="w-10 h-10 text-stone-300 mx-auto mb-3" />
               <h3 className="text-sm font-semibold text-stone-900 mb-1">Sign In to Track Orders</h3>
               <p className="text-xs text-stone-500 mb-4 max-w-xs mx-auto">
@@ -154,7 +153,7 @@ export default function OrderHistoryModal({
                   onClose();
                   onRequireAuth();
                 }}
-                className="px-4 py-2 text-xs font-semibold text-white bg-stone-900 rounded-md hover:bg-stone-800 transition-colors"
+                className="px-5 py-2.5 text-xs font-semibold text-white bg-stone-900 rounded-md hover:bg-stone-800 transition-colors cursor-pointer"
               >
                 Sign In Now
               </button>
@@ -169,26 +168,26 @@ export default function OrderHistoryModal({
               <span>{errorMessage}</span>
             </div>
           ) : orders.length === 0 ? (
-            <div className="text-center py-12">
+            <div className="text-center py-10 sm:py-12">
               <p className="text-sm font-medium text-stone-900 mb-1">No Orders Yet</p>
               <p className="text-xs text-stone-500 mb-4">
                 You have not placed any orders with this account yet.
               </p>
               <button
                 onClick={onClose}
-                className="px-4 py-2 text-xs font-semibold text-stone-900 border border-stone-300 rounded-md hover:bg-stone-50 transition-colors"
+                className="px-4 py-2 text-xs font-semibold text-stone-900 border border-stone-300 rounded-md hover:bg-stone-50 transition-colors cursor-pointer"
               >
                 Explore Collection
               </button>
             </div>
           ) : (
-            <div className="space-y-4">
+            <div className="space-y-3.5 sm:space-y-4">
               {orders.map((order) => (
                 <div
                   key={order._id}
-                  className="border border-stone-200 rounded-lg p-5 bg-stone-50/40 hover:bg-stone-50 transition-colors"
+                  className="border border-stone-200 rounded-lg p-3.5 sm:p-5 bg-stone-50/40 hover:bg-stone-50 transition-colors"
                 >
-                  <div className="flex flex-wrap items-center justify-between gap-2 border-b border-stone-200/80 pb-3 mb-3">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-stone-200/80 pb-2.5 mb-2.5 sm:pb-3 sm:mb-3">
                     <div>
                       <span className="font-mono text-xs font-semibold text-stone-900">
                         {order.orderId}
@@ -207,20 +206,20 @@ export default function OrderHistoryModal({
                   {/* Items list */}
                   <div className="space-y-2 mb-3">
                     {order.items.map((item, idx) => (
-                      <div key={idx} className="flex items-center gap-3">
+                      <div key={idx} className="flex items-center gap-2.5 sm:gap-3">
                         <div className="relative w-10 h-10 bg-stone-200 rounded overflow-hidden shrink-0">
                           <OrderItemThumbnail
                             src={item.imageUrl}
                             alt={item.name}
                           />
                         </div>
-                        <div className="flex-grow text-xs">
-                          <span className="font-medium text-stone-900 block">{item.name}</span>
-                          <span className="text-stone-500 tabular-nums">
+                        <div className="flex-grow text-xs min-w-0">
+                          <span className="font-medium text-stone-900 block truncate">{item.name}</span>
+                          <span className="text-stone-500 tabular-nums text-[11px]">
                             Qty: {item.quantity} · ${item.price.toFixed(2)} each
                           </span>
                         </div>
-                        <span className="text-xs font-semibold tabular-nums text-stone-900">
+                        <span className="text-xs font-semibold tabular-nums text-stone-900 shrink-0">
                           ${(item.price * item.quantity).toFixed(2)}
                         </span>
                       </div>
@@ -228,11 +227,11 @@ export default function OrderHistoryModal({
                   </div>
 
                   {/* Delivery & Payment note */}
-                  <div className="pt-3 border-t border-stone-200/80 flex flex-wrap items-center justify-between text-[11px] text-stone-500 gap-2">
-                    <span>
+                  <div className="pt-2.5 sm:pt-3 border-t border-stone-200/80 flex flex-col sm:flex-row sm:items-center justify-between text-[11px] text-stone-500 gap-1.5 sm:gap-2">
+                    <span className="truncate">
                       Delivery: {order.deliveryAddress.street}, {order.deliveryAddress.city}
                     </span>
-                    <span className="font-semibold text-stone-900 tabular-nums">
+                    <span className="font-semibold text-stone-900 tabular-nums shrink-0">
                       Total: ${order.total.toFixed(2)} ({order.paymentMethod})
                     </span>
                   </div>

@@ -260,33 +260,34 @@ export default function AdminDashboardModal({
   const lowStockCount = products.filter((p) => p.stock <= 5).length;
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-stone-900/60 backdrop-blur-sm flex items-center justify-center p-4">
-      <div className="relative bg-white rounded-lg shadow-2xl max-w-5xl w-full border border-stone-200 overflow-hidden my-6 max-h-[90vh] flex flex-col">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-stone-900/60 backdrop-blur-sm flex items-center justify-center p-2.5 sm:p-4">
+      <div className="relative bg-white rounded-lg shadow-2xl max-w-5xl w-full border border-stone-200 overflow-hidden my-2 sm:my-6 max-h-[96vh] sm:max-h-[90vh] flex flex-col">
         {/* Header */}
-        <div className="px-6 py-4 border-b border-stone-200 flex items-center justify-between bg-stone-900 text-stone-100">
+        <div className="px-4 sm:px-6 py-3.5 sm:py-4 border-b border-stone-200 flex items-center justify-between bg-stone-900 text-stone-100 shrink-0">
           <div>
-            <div className="flex items-center gap-2">
-              <span className="text-xs uppercase font-mono tracking-widest text-amber-400">
+            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+              <span className="text-[10px] sm:text-xs uppercase font-mono tracking-widest text-amber-400">
                 ADMIN CONSOLE
               </span>
-              <span className="text-stone-400 text-xs">· Role-Based Authorization Active</span>
+              <span className="text-stone-400 text-[10px] sm:text-xs hidden sm:inline">· Role-Based Authorization Active</span>
             </div>
-            <h2 className="text-lg font-semibold text-white">Store & Inventory Operations</h2>
+            <h2 className="text-base sm:text-lg font-semibold text-white">Store & Inventory Operations</h2>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 text-stone-400 hover:text-white rounded-md transition-colors"
+            aria-label="Close admin dashboard"
+            className="p-1.5 text-stone-400 hover:text-white rounded-md transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Tab Navigation & Refresh */}
-        <div className="flex items-center justify-between px-6 border-b border-stone-200 bg-stone-50">
-          <div className="flex gap-4">
+        <div className="flex items-center justify-between px-4 sm:px-6 border-b border-stone-200 bg-stone-50 shrink-0 overflow-x-auto scrollbar-none">
+          <div className="flex gap-2 sm:gap-4 shrink-0">
             <button
               onClick={() => setActiveTab('products')}
-              className={`py-3 text-xs font-semibold border-b-2 transition-colors flex items-center gap-1.5 ${
+              className={`py-3 text-xs font-semibold border-b-2 transition-colors flex items-center gap-1.5 whitespace-nowrap cursor-pointer ${
                 activeTab === 'products'
                   ? 'border-stone-900 text-stone-900'
                   : 'border-transparent text-stone-500 hover:text-stone-900'
@@ -297,7 +298,7 @@ export default function AdminDashboardModal({
             </button>
             <button
               onClick={() => setActiveTab('orders')}
-              className={`py-3 text-xs font-semibold border-b-2 transition-colors flex items-center gap-1.5 ${
+              className={`py-3 text-xs font-semibold border-b-2 transition-colors flex items-center gap-1.5 whitespace-nowrap cursor-pointer ${
                 activeTab === 'orders'
                   ? 'border-stone-900 text-stone-900'
                   : 'border-transparent text-stone-500 hover:text-stone-900'
@@ -308,7 +309,7 @@ export default function AdminDashboardModal({
             </button>
             <button
               onClick={() => setActiveTab('server')}
-              className={`py-3 text-xs font-semibold border-b-2 transition-colors flex items-center gap-1.5 ${
+              className={`py-3 text-xs font-semibold border-b-2 transition-colors flex items-center gap-1.5 whitespace-nowrap cursor-pointer ${
                 activeTab === 'server'
                   ? 'border-stone-900 text-stone-900'
                   : 'border-transparent text-stone-500 hover:text-stone-900'
@@ -322,54 +323,54 @@ export default function AdminDashboardModal({
           <button
             onClick={fetchAdminData}
             title="Refresh Data"
-            className="p-1.5 text-stone-500 hover:text-stone-900 rounded hover:bg-stone-200 transition-colors"
+            className="p-1.5 text-stone-500 hover:text-stone-900 rounded hover:bg-stone-200 transition-colors ml-2 shrink-0 cursor-pointer"
           >
             <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
           </button>
         </div>
 
         {/* KPI Strip */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-6 bg-stone-50/50 border-b border-stone-200 text-xs">
-          <div className="bg-white p-3.5 rounded border border-stone-200">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-4 p-3.5 sm:p-6 bg-stone-50/50 border-b border-stone-200 text-xs shrink-0">
+          <div className="bg-white p-3 sm:p-3.5 rounded border border-stone-200">
             <div className="flex items-center justify-between text-stone-500 mb-1">
               <span>Gross Sales</span>
-              <DollarSign className="w-3.5 h-3.5 text-emerald-600" />
+              <DollarSign className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
             </div>
-            <div className="text-base font-semibold text-stone-900 tabular-nums">
+            <div className="text-sm sm:text-base font-semibold text-stone-900 tabular-nums">
               ${totalRevenue.toFixed(2)}
             </div>
           </div>
-          <div className="bg-white p-3.5 rounded border border-stone-200">
+          <div className="bg-white p-3 sm:p-3.5 rounded border border-stone-200">
             <div className="flex items-center justify-between text-stone-500 mb-1">
               <span>Total Orders</span>
-              <Layers className="w-3.5 h-3.5 text-blue-600" />
+              <Layers className="w-3.5 h-3.5 text-blue-600 shrink-0" />
             </div>
-            <div className="text-base font-semibold text-stone-900 tabular-nums">
+            <div className="text-sm sm:text-base font-semibold text-stone-900 tabular-nums">
               {orders.length}
             </div>
           </div>
-          <div className="bg-white p-3.5 rounded border border-stone-200">
+          <div className="bg-white p-3 sm:p-3.5 rounded border border-stone-200">
             <div className="flex items-center justify-between text-stone-500 mb-1">
               <span>Active Catalog</span>
-              <Package className="w-3.5 h-3.5 text-stone-600" />
+              <Package className="w-3.5 h-3.5 text-stone-600 shrink-0" />
             </div>
-            <div className="text-base font-semibold text-stone-900 tabular-nums">
+            <div className="text-sm sm:text-base font-semibold text-stone-900 tabular-nums">
               {products.length} Items
             </div>
           </div>
-          <div className="bg-white p-3.5 rounded border border-stone-200">
+          <div className="bg-white p-3 sm:p-3.5 rounded border border-stone-200">
             <div className="flex items-center justify-between text-stone-500 mb-1">
               <span>Low Inventory</span>
-              <AlertTriangle className="w-3.5 h-3.5 text-amber-600" />
+              <AlertTriangle className="w-3.5 h-3.5 text-amber-600 shrink-0" />
             </div>
-            <div className="text-base font-semibold text-stone-900 tabular-nums">
+            <div className="text-sm sm:text-base font-semibold text-stone-900 tabular-nums">
               {lowStockCount} Items (≤5)
             </div>
           </div>
         </div>
 
         {/* Tab Content */}
-        <div className="p-6 overflow-y-auto flex-grow">
+        <div className="p-3.5 sm:p-6 overflow-y-auto flex-grow">
           {statusMessage && (
             <div className="mb-4 p-3 bg-amber-50 text-amber-800 text-xs rounded border border-amber-200">
               {statusMessage}
@@ -379,13 +380,13 @@ export default function AdminDashboardModal({
           {/* TAB 1: PRODUCTS */}
           {activeTab === 'products' && (
             <div>
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-sm font-semibold text-stone-900">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 mb-4">
+                <h3 className="text-xs sm:text-sm font-semibold text-stone-900">
                   Catalog Inventory & Pricing Management
                 </h3>
                 <button
                   onClick={() => setIsCreatingProduct(!isCreatingProduct)}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-white bg-stone-900 rounded hover:bg-stone-800 transition-colors"
+                  className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-white bg-stone-900 rounded hover:bg-stone-800 transition-colors self-start sm:self-auto cursor-pointer"
                 >
                   <Plus className="w-3.5 h-3.5" />
                   <span>{isCreatingProduct ? 'Cancel' : 'Add New Product'}</span>
@@ -490,8 +491,8 @@ export default function AdminDashboardModal({
               )}
 
               {/* Products Table */}
-              <div className="overflow-x-auto border border-stone-200 rounded-lg">
-                <table className="w-full text-left text-xs">
+              <div className="overflow-x-auto border border-stone-200 rounded-lg -mx-0.5 sm:mx-0">
+                <table className="w-full min-w-[500px] text-left text-xs">
                   <thead className="bg-stone-50 border-b border-stone-200 text-stone-600 font-medium uppercase text-[10px] tracking-wider">
                     <tr>
                       <th className="py-2.5 px-3">Object</th>
@@ -604,11 +605,11 @@ export default function AdminDashboardModal({
           {/* TAB 2: ORDERS */}
           {activeTab === 'orders' && (
             <div>
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-sm font-semibold text-stone-900">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 mb-4">
+                <h3 className="text-xs sm:text-sm font-semibold text-stone-900">
                   Customer Orders & Fulfillment Workflow
                 </h3>
-                <span className="text-xs text-stone-500">
+                <span className="text-[11px] sm:text-xs text-stone-500">
                   Cancelling an order automatically restores inventory stock.
                 </span>
               </div>
@@ -731,7 +732,7 @@ export default function AdminDashboardModal({
                 <p className="text-stone-600 mb-3">
                   The complete backend codebase is organized in the <code className="font-mono bg-stone-100 px-1">/backend</code> folder:
                 </p>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 font-mono text-[11px] text-stone-700">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 font-mono text-[11px] text-stone-700">
                   <div className="p-2 bg-stone-50 rounded border border-stone-200">server.js (Express)</div>
                   <div className="p-2 bg-stone-50 rounded border border-stone-200">config/db.js</div>
                   <div className="p-2 bg-stone-50 rounded border border-stone-200">models/User.js</div>

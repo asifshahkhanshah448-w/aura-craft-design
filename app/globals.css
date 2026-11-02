@@ -3,6 +3,11 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @layer base {
+  html, body {
+    overflow-x: hidden;
+    max-width: 100%;
+  }
+
   body {
     @apply bg-stone-50 text-stone-900 antialiased selection:bg-stone-900 selection:text-stone-50;
     font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
